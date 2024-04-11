@@ -32,6 +32,26 @@
             margin-top: 20px;
             font-weight: bold;
         }
+        #letter-map-container {
+            margin-top: 40px;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+        #letter-map-container h2 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        #letter-map-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #letter-map-table td {
+            border: 1px solid #ccc;
+            padding: 4px;
+            text-align: left;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -43,13 +63,46 @@
     </div>
     <div id="decoded-message"></div>
 
+    <div id="letter-map-container">
+        <h2>Letter Map</h2>
+        <table id="letter-map-table"></table>
+    </div>
+
     <script>
-        // Define the letter map as a global variable
+        // Define the letter map
         const letterMap = {
             ".0": 'A', ".1": 'B', ".2": 'C', ".3": 'D', ".4": 'E', ".5": 'F', ".6": 'G', ".7": 'H', ".8": 'I', ".9": 'J',
             ".00": 'K', ".01": 'L', ".02": 'M', ".03": 'N', ".04": 'O', ".05": 'P', ".06": 'Q', ".07": 'R', ".08": 'S', ".09": 'T',
             ".000": 'U', ".001": 'V', ".002": 'W', ".003": 'X', ".004": 'Y', ".005": 'Z'
         };
+
+        // Function to display letter map in table format
+        function displayLetterMap() {
+            const letterMapTable = document.getElementById('letter-map-table');
+            let rowCount = 0;
+            let currentRow = null;
+
+            // Iterate over the letterMap object
+            for (const binaryCode in letterMap) {
+                if (letterMap.hasOwnProperty(binaryCode)) {
+                    const letter = letterMap[binaryCode];
+
+                    // Create a new row every 5 entries for compact display
+                    if (rowCount % 5 === 0) {
+                        currentRow = letterMapTable.insertRow();
+                    }
+
+                    // Create a cell for the binary code and letter pair
+                    const codeCell = currentRow.insertCell();
+                    codeCell.textContent = binaryCode + ': ' + letter;
+
+                    rowCount++;
+                }
+            }
+        }
+
+        // Call the function to display letter map on page load
+        displayLetterMap();
 
         // Function to decode the binary representation string
         function decodeBinaryString(binaryString) {
@@ -96,9 +149,10 @@
         function decodeBinary() {
             const binaryInput = document.getElementById('binary-input').value;
             const decodedMessage = decodeBinaryString(binaryInput);
+
+            // Display the decoded message
             const decodedMessageDiv = document.getElementById('decoded-message');
             decodedMessageDiv.textContent = "Decoded message: " + decodedMessage;
         }
     </script>
 </body>
-</html>
